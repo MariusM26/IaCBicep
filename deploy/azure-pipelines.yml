@@ -1,7 +1,9 @@
 trigger: none
 
 pool:
-  vmImage: ubuntu-latest
+  name: wsl-hosted-pool
+  demands:
+    - agent.name -equals wsl-hosted-agent
 
 jobs:
 - job:
