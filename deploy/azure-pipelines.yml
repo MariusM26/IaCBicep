@@ -6,7 +6,8 @@ pool:
     - agent.name -equals wsl-hosted-agent
 
 jobs:
-- job:
+- job: helloWorldJob
+  displayName: 'Building project...'
   steps:
   - script: echo Hello world!
     displayName: 'First pipeline step is:'
