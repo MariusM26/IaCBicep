@@ -1,13 +1,25 @@
 trigger: none
 
 pool:
-  name: wsl-hosted-pool
-  demands:
-    - agent.name -equals wsl-hosted-agent
+  vmImage: ubuntu-latest
+
+variables:
+- name: deploymentDefaultLocation
+  value: westus3
+- name: EnvironmentType
+  value: nonprod
 
 jobs:
-- job: helloWorldJob
-  displayName: 'Building project...'
+- job:
   steps:
-  - script: echo Hello world!
-    displayName: 'First pipeline step is:'
+
+  - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      connectedServiceName: $(ServiceConnectionName)
+      deploymentName: $(Build.BuildNumber)
+      location: $(deploymentDefaultLocation)
+      resourceGroupName: $(ResourceGroupName)
+      csmFile: deploy/main.bicep
+      overrideParameters: >
+        -environmentType $(EnvironmentType)
+        -deployToyManualsStorageAccount $(DeployToyManualsStorageAccount)
