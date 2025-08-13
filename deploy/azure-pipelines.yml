@@ -8,17 +8,27 @@ variables:
   value: westus3
 - name: EnvironmentType
   value: nonprod
+- name: AZURE_ACCESS_TOKEN
+  value: 'System.Security.SecureString'
+- name: TenantId
+  value: '604c1504-c6a3-4080-81aa-b33091104187'
 
 jobs:
 - job:
   steps:
 
-  - task: AzureResourceManagerTemplateDeployment@3
+  - task: AzurePowerShell@5
     inputs:
-      connectedServiceName: $(ServiceConnectionName)
-      deploymentName: $(Build.BuildNumber)
-      location: $(deploymentDefaultLocation)
-      resourceGroupName: $(ResourceGroupName)
-      csmFile: deploy/main.bicep
-      overrideParameters: >
-        -environmentType $(EnvironmentType)
+      azureSubscription: ''
+      ScriptType: InlineScript
+      Inline: |
+        Connect-AzAccount -AccessToken $(AZURE_ACCESS_TOKEN) -Tenant $(TenantId)
+
+        New-AzResourceGroupDeployment `
+          -ResourceGroupName $(ResourceGroupName) `
+          -TemplateFile deploy/main.bicep `
+          -deploymentName $(Build.BuildNumber) `
+          -TemplateParameterObject @{ environmentType = "$(EnvironmentType)" } `
+          -Location $(deploymentDefaultLocation)
+
+          pwsh: true
