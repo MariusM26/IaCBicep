@@ -22,4 +22,3 @@ jobs:
       csmFile: deploy/main.bicep
       overrideParameters: >
         -environmentType $(EnvironmentType)
-        -deployToyManualsStorageAccount $(DeployToyManualsStorageAccount)
