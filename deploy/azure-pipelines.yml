@@ -6,30 +6,15 @@ pool:
     - agent.name -equals wsl-hosted-agent
 
 variables:
-- name: deploymentDefaultLocation
-  value: westus3
-- name: EnvironmentType
-  value: nonprod
-- name: AZURE_ACCESS_TOKEN
-  value: 'System.Security.SecureString'
-- name: TenantId
-  value: '604c1504-c6a3-4080-81aa-b33091104187'
+  ServiceConnectionName: 'service-connection-iac'
+  DeploymentDefaultLocation: 'WestEurope'
 
 jobs:
 - job:
   steps:
-
-  - task: AzurePowerShell@5
+  - task: AzureResourceManagerTemplateDeployment@3
     inputs:
-      azureSubscription: ''
-      ScriptType: InlineScript
-      Inline: |
-        Connect-AzAccount -AccessToken $(AZURE_ACCESS_TOKEN) -Tenant $(TenantId)
-
-        New-AzResourceGroupDeployment `
-          -ResourceGroupName "learn-90df0edb-97bf-497b-a001-163df6dd4d80" `
-          -TemplateFile deploy/main.bicep `
-          -TemplateParameterObject @{ environmentType = "$(EnvironmentType)" } `
-          -Location $(deploymentDefaultLocation)
-
-          pwsh: true
+      connectedServiceName: $(ServiceConnectionName)
+      location: $(DeploymentDefaultLocation)
+      deploymentScope: Subscription
+      csmFile: deploy/main.bicep
