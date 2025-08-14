@@ -27,9 +27,8 @@ jobs:
         Connect-AzAccount -AccessToken $(AZURE_ACCESS_TOKEN) -Tenant $(TenantId)
 
         New-AzResourceGroupDeployment `
-          -ResourceGroupName $(ResourceGroupName) `
+          -ResourceGroupName "learn-90df0edb-97bf-497b-a001-163df6dd4d80" `
           -TemplateFile deploy/main.bicep `
-          -deploymentName $(Build.BuildNumber) `
           -TemplateParameterObject @{ environmentType = "$(EnvironmentType)" } `
           -Location $(deploymentDefaultLocation)
 
