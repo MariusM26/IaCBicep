@@ -3,7 +3,7 @@ trigger: none
 pool:
   name: wsl-hosted-pool
   demands:
-    - agent.name -equals wsl-hosted-agent
+    - agent.name -equals windows-hosted-agent
 
 variables:
   ServiceConnectionName: 'service-connection-iac'
