@@ -1,6 +1,16 @@
-trigger: none
+trigger: 
+  # No parallel executions
+  batch: true
+  # Trigger only when pushing to 'master' and changes are applied to ./deploy/* files
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - deploy
 
 pool:
+  # Custom pool with self-hosted Windows agent
   name: wsl-hosted-pool
   demands:
     - agent.name -equals windows-hosted-agent
