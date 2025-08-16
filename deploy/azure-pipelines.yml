@@ -6,7 +6,6 @@ pool:
     - agent.name -equals windows-hosted-agent
 
 variables:
-  ServiceConnectionName: 'service-connection-iac'
   DeploymentDefaultLocation: 'WestEurope'
 
 jobs:
