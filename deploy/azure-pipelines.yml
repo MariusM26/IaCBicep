@@ -1,5 +1,5 @@
 trigger: 
-  # No parallel executions
+  # Set to 'OFF' the execution of parallel pipelines execution
   batch: true
   # Trigger only when pushing to 'master' and changes are applied to ./deploy/* files
   branches:
@@ -17,6 +17,16 @@ pool:
 
 variables:
   DeploymentDefaultLocation: 'WestEurope'
+
+stages:
+- stage: ResourceGroupDeployment
+  displayName: 'Create all the necessary Resource Groups at the Subscription level'
+  jobs:
+  - job: 
+
+
+
+
 
 jobs:
 - job:
