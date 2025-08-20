@@ -1,7 +1,7 @@
 trigger: 
   # Set to 'OFF' the execution of parallel pipelines execution
   batch: true
-  # Trigger only when pushing to 'master' and changes are applied to ./deploy/* files
+  # Trigger only when pushing to 'master' and changes are applied to the ./deploy/* files
   branches:
     include:
     - master
