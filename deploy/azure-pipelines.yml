@@ -18,16 +18,6 @@ pool:
 variables:
   DeploymentDefaultLocation: 'WestEurope'
 
-stages:
-- stage: ResourceGroupDeployment
-  displayName: 'Create all the necessary Resource Groups at the Subscription level'
-  jobs:
-  - job: 
-
-
-
-
-
 jobs:
 - job:
   steps:
