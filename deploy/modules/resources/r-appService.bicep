@@ -48,8 +48,6 @@ resource appService 'Microsoft.Web/sites@2024-11-01' = {
           value: 'false'
         }
       ]
-      localMySqlEnabled: false
-      netFrameworkVersion: 'v4.6'
     }
   }
 }
