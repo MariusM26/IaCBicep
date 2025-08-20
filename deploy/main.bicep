@@ -1,8 +1,26 @@
+param location string = 'WestEurope'
+param env string = 'dev'
+
 targetScope = 'subscription'
 
-// Deploying the resource group and a storage account inside of it
-module resourceGroup 'modules/rg-shared-platform.bicep' = {
+module resourceGroupMonitoring 'modules/resource-groups/rg-monitoring.bicep' = {
+  scope: subscription()
   params: {
-    environmentType: 'dev'
+    environmentType: env
+    location: location
+  }
+}
+
+module resourceGroupBackoffice 'modules/resource-groups/rg-backoffice.bicep' = {
+  scope: subscription()
+  params: {
+    location: location
+  }
+}
+
+module resourceGroupCommon 'modules/resource-groups/rg-common.bicep' = {
+  scope: subscription()
+  params: {
+    environmentType: env
   }
 }
