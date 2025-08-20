@@ -23,4 +23,7 @@ module storageAccount '../resources/r-storageAccount.bicep' = {
 
 module appService '../resources/r-appService.bicep' = {
   scope: backofficeRG
+  params: {
+    location: location
+  }
 }

@@ -1,16 +1,19 @@
 param environmentType string
-param location string = 'WestEurope'
+param location string
 
-module virtualNetwork 'br/public:avm/res/network/virtual-network:0.7.0' = {
-  name: 'virtualNetworkDeployment'
-  scope: resourceGroup()
-  params: {
-    // Required parameters
-    addressPrefixes: [
-      '10.0.0.0/16'
-    ]
-    name: 'vnet-${environmentType}-${location}'
-    // Non-required parameters
-    location: location
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2024-07-01' = {
+  name: 'vnet-${environmentType}-${location}'
+  location: location
+  dependsOn: [
+    resourceGroup()
+  ]
+
+  properties: {
+    privateEndpointVNetPolicies: 'Disabled'
+    addressSpace: {
+      addressPrefixes: [
+        '10.0.0.0/16'
+      ]
+    }
   }
 }

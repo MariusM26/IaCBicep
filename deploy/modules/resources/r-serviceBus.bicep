@@ -21,6 +21,17 @@ resource serviceBusTopic 'Microsoft.ServiceBus/namespaces/topics@2024-01-01' = {
   dependsOn: [
     servicebus
   ]
+  properties: {
+    autoDeleteOnIdle: 'P1D'
+    defaultMessageTimeToLive: 'P1D'
+    duplicateDetectionHistoryTimeWindow: 'PT10M'
+    enableBatchedOperations: true
+    enableExpress: false
+    enablePartitioning: false
+    maxMessageSizeInKilobytes: 256
+    maxSizeInMegabytes: 1024
+    supportOrdering: false
+  }
 }
 
 resource serviceBusSubscription 'Microsoft.ServiceBus/namespaces/topics/subscriptions@2024-01-01' = {
@@ -31,5 +42,10 @@ resource serviceBusSubscription 'Microsoft.ServiceBus/namespaces/topics/subscrip
   properties: {
     maxDeliveryCount: 1
     lockDuration: 'PT5M'
+    autoDeleteOnIdle: 'P1D'
+    deadLetteringOnMessageExpiration: false
+    defaultMessageTimeToLive: 'P1D'
+    enableBatchedOperations: true
+    isClientAffine: false
   }
 }

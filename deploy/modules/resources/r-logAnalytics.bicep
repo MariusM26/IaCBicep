@@ -14,9 +14,7 @@ module workspace 'br/public:avm/res/operational-insights/workspace:0.12.0' = {
   name: 'workspaceDeployment'
   scope: resourceGroup()
   params: {
-    // Required parameters
     name: workspaceName
-    // Non-required parameters
     location: location
     dataRetention: retentionInDays
     dailyQuotaGb: 1
