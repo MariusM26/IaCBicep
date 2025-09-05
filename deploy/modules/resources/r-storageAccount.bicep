@@ -1,19 +1,5 @@
 param location string
 
-// module storageAccount 'br/public:avm/res/storage/storage-account:0.26.0' = {
-//   name: 'storageAccountDeployment'
-//   params: {
-//     blobServices: {}
-//     name: 'sadevmarad'
-//     location: location
-//     accessTier: 'Cold'
-
-//     kind: 'StorageV2'
-//     skuName: 'Standard_LRS'
-//     customDomainUseSubDomainName: null
-//   }
-// }
-
 resource storageAccount 'Microsoft.Storage/storageAccounts@2025-01-01' = {
   name: 'sadevmarad'
   location: location
@@ -23,6 +9,11 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2025-01-01' = {
   kind: 'StorageV2'
   properties: {
     accessTier: 'Cold'
+    publicNetworkAccess: 'Enabled'
+    networkAcls: {
+      defaultAction: 'Deny'
+      bypass: 'None'
+    }
   }
 }
 
@@ -35,13 +26,20 @@ resource fileServices 'Microsoft.Storage/storageAccounts/fileServices@2025-01-01
       days: 7
     }
   }
+  dependsOn: [
+    storageAccount
+  ]
 }
 
 resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2025-01-01' = {
   #disable-next-line use-parent-property
   name: 'sadevmarad/default/fileshare'
   properties: {
+    enabledProtocols: 'SMB'
     accessTier: 'TransactionOptimized'
-    shareQuota: 102400
+    shareQuota: 20
   }
+  dependsOn: [
+    fileServices
+  ]
 }

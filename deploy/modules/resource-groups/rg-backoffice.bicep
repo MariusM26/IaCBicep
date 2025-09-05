@@ -1,4 +1,5 @@
 param location string
+param subnetId string
 
 targetScope = 'subscription'
 
@@ -24,6 +25,14 @@ module storageAccount '../resources/r-storageAccount.bicep' = {
 module appService '../resources/r-appService.bicep' = {
   scope: backofficeRG
   params: {
-    location: location
+    // App Service Plan params
+    appServicePlanName: 'asp-dev-backoffice'
+    appServicePlanKind: 'windows'
+    appServicePlanSku: 'S3'
+    appServicePlanSkuCapacity: 1
+    appServiceName: 'as-dev-backoffice'
+    appServiceLocation: location
+    appServiceKind: 'app'
+    subnetId: subnetId
   }
 }

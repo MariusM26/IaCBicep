@@ -19,11 +19,3 @@ module registry '../resources/r-containerRegistry.bicep' = {
     environmentType: environmentType
   }
 }
-
-module vNet '../resources/r-vNet.bicep' = {
-  scope: commonRG
-  params: {
-    location: location
-    environmentType: environmentType
-  }
-}

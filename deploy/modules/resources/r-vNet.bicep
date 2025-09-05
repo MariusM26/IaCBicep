@@ -1,19 +1,22 @@
 param environmentType string
 param location string
+param addressPrefix string
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2024-07-01' = {
   name: 'vnet-${environmentType}-${location}'
   location: location
-  dependsOn: [
-    resourceGroup()
-  ]
-
   properties: {
     privateEndpointVNetPolicies: 'Disabled'
     addressSpace: {
       addressPrefixes: [
-        '10.0.0.0/16'
+        addressPrefix
       ]
     }
   }
+  dependsOn: [
+    resourceGroup()
+  ]
 }
+
+output vNetName string = virtualNetwork.name
+output vNetId string = virtualNetwork.id

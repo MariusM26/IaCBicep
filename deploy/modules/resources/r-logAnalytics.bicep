@@ -4,11 +4,10 @@
   'prod'
 ])
 @description('The environment in which the deployment is done.)')
-param environmentType string
-
-var retentionInDays int = 30
-var location string = 'WestEurope'
-var workspaceName string = 'la-${environmentType}'
+param environmentType string = 'dev'
+param location string = 'WestEurope'
+param workspaceName string = 'laWorkspace-${environmentType}-${location}'
+param retentionInDays int = 30
 
 module workspace 'br/public:avm/res/operational-insights/workspace:0.12.0' = {
   name: 'workspaceDeployment'
@@ -24,3 +23,5 @@ module workspace 'br/public:avm/res/operational-insights/workspace:0.12.0' = {
     }
   }
 }
+
+output logAnalyticsId string = workspace.outputs.resourceId

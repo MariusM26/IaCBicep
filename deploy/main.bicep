@@ -11,10 +11,19 @@ module resourceGroupMonitoring 'modules/resource-groups/rg-monitoring.bicep' = {
   }
 }
 
+module resourceGroupNetwork 'modules/resource-groups/rg-network.bicep' = {
+  scope: subscription()
+  params: {
+    location: location
+    environmentType: env
+  }
+}
+
 module resourceGroupBackoffice 'modules/resource-groups/rg-backoffice.bicep' = {
   scope: subscription()
   params: {
     location: location
+    subnetId: resourceGroupNetwork.outputs.appServiceSubnetId
   }
 }
 

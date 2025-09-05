@@ -25,7 +25,7 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2025-04-01' =
         status: 'disabled'
       }
     }
-    adminUserEnabled: true
+    adminUserEnabled: false
   }
   sku: {
     name: 'Standard'

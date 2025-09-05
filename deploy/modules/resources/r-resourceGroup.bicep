@@ -8,7 +8,7 @@ param environmentType string
 param resourceGroupName string
 
 @description('The base location for the shared resources group.')
-var baseLocation string = 'WestEurope'
+param baseLocation string
 
 @description('The name of the shared resources group.')
 var rgName string = 'rg-${resourceGroupName}-${environmentType}'
