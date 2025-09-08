@@ -35,7 +35,7 @@ resource vNet 'Microsoft.Network/virtualNetworks@2024-07-01' existing = {
 }
 
 /* -------------------- SQL Server + Database -------------------- */
-module server 'br/public:avm/res/sql/server:0.20.2' = {
+module sqlServer 'br/public:avm/res/sql/server:0.20.2' = {
   name: sqlServerDeploymentName
   params: {
     name: sqlServerName
@@ -91,6 +91,7 @@ module server 'br/public:avm/res/sql/server:0.20.2' = {
         '<managedIdentityResourceId>'
       ]
     }
+    minimalTlsVersion: '1.3'
     primaryUserAssignedIdentityResourceId: '<primaryUserAssignedIdentityResourceId>'
     privateEndpoints: [
       {
@@ -110,6 +111,7 @@ module server 'br/public:avm/res/sql/server:0.20.2' = {
         }
       }
     ]
+    publicNetworkAccess: 'Disabled'
     restrictOutboundNetworkAccess: 'Disabled'
     securityAlertPolicies: [
       {
@@ -142,25 +144,6 @@ module server 'br/public:avm/res/sql/server:0.20.2' = {
       }
       storageAccountResourceId: '<storageAccountResourceId>'
     }
-  }
-}
-
-resource sqlServer 'Microsoft.Sql/servers@2023-08-01' = {
-  name: sqlServerName
-  location: location
-  identity: {
-    type: 'SystemAssigned'
-  }
-  properties: {
-    administrators: {
-      administratorType: 'ActiveDirectory'
-      login: serverAdminUsername
-      sid: aadObjectId
-      tenantId: tenant().tenantId
-      azureADOnlyAuthentication: true
-    }
-    minimalTlsVersion: '1.2'
-    publicNetworkAccess: 'Disabled'
   }
 }
 
