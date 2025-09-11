@@ -14,33 +14,35 @@ resource networkRG 'Microsoft.Resources/resourceGroups@2025-04-01' = {
 }
 
 // West Europe Virtual Network
-module vNet '../resources/r-vNet.bicep' = {
+module vNet '../resources/network/r-vNet.bicep' = {
   scope: networkRG
   params: {
     location: location
     environmentType: environmentType
-    addressPrefix: '10.0.0.0/16'
+    logAnalyticsWorkspaceId: ''
+    networkSecurityGroupId: ''
   }
 }
 
 // NSGs
-module appServiceSubnetNsg '../resources/r-nsg.bicep' = {
+module appServiceSubnetNsg '../resources/network/r-nsg.bicep' = {
   scope: networkRG
   params: {
     location: location
-    resourceName: 'appService'
-    nsgType: 'appService'
+    nsgType: 'appservice'
+    environmentType: environmentType
+    logAnalyticsWorkspaceId: ''
   }
 }
 
 // App Service Subnet
-module appServiceSubnet '../resources/r-subNet.bicep' = {
+module appServiceSubnet '../resources/network/r-subNet.bicep' = {
   scope: networkRG
   params: {
     resourceName: 'appService'
     vNetName: vNet.outputs.vNetName
     subNetAddressPrefix: '10.0.2.0/24'
-    networkSecurityGroupId: appServiceSubnetNsg.outputs.nsgId
+    networkSecurityGroupId: appServiceSubnetNsg.outputs.resourceId
     delegations: [
       {
         name: 'delegation-appService'
@@ -53,7 +55,7 @@ module appServiceSubnet '../resources/r-subNet.bicep' = {
 }
 
 // Private Endpoint Subnet
-module privateEndpointSubnet '../resources/r-subNet.bicep' = {
+module privateEndpointSubnet '../resources/network/r-subNet.bicep' = {
   scope: networkRG
   params: {
     resourceName: 'privateEndpoint'

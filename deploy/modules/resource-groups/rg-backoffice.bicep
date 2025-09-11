@@ -8,21 +8,21 @@ resource backofficeRG 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   location: location
 }
 
-module serviceBus '../resources/r-serviceBus.bicep' = {
+module serviceBus '../resources/services/r-serviceBus.bicep' = {
   scope: backofficeRG
   params: {
     location: location
   }
 }
 
-module storageAccount '../resources/r-storageAccount.bicep' = {
+module storageAccount '../resources/services/r-storageAccount.bicep' = {
   scope: backofficeRG
   params: {
     location: location
   }
 }
 
-module appService '../resources/r-appService.bicep' = {
+module appService '../resources/services/r-appService.bicep' = {
   scope: backofficeRG
   params: {
     // App Service Plan params

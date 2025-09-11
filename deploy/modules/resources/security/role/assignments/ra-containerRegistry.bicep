@@ -1,4 +1,4 @@
-import { roleDefinitions } from '../definitions/roleDefinitions.bicep'
+import { roleDefinitions } from '../../../../common/roleDefinitions.bicep'
 
 param appServicePrincipalId string
 param containerRegistryName string

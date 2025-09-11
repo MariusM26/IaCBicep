@@ -12,7 +12,7 @@ resource commonRG 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   }
 }
 
-module registry '../resources/r-containerRegistry.bicep' = {
+module registry '../resources/services/r-containerRegistry.bicep' = {
   scope: commonRG
   params: {
     location: location

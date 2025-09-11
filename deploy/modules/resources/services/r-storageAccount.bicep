@@ -17,6 +17,25 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2025-01-01' = {
   }
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////// To be AVMED
+
+module t 'br/public:avm/res/storage/storage-account:0.26.2' = {
+  params: {
+    name: ''
+    privateEndpoints: [
+      {
+        name: 'sadevmarad-plsc'
+        properties: {
+          privateLinkServiceId: storageAccount.id
+          groupIds: ['blob']
+        }
+        service: ''
+        subnetResourceId: ''
+      }
+    ]
+  }
+}
+
 resource fileServices 'Microsoft.Storage/storageAccounts/fileServices@2025-01-01' = {
   #disable-next-line use-parent-property
   name: 'sadevmarad/default'

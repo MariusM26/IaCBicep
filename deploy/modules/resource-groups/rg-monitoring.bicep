@@ -8,7 +8,7 @@ resource monitoringRG 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   location: location
 }
 
-module laWorkspace '../resources/r-logAnalytics.bicep' = {
+module laWorkspace '../resources/analytics/r-logAnalytics.bicep' = {
   scope: monitoringRG
   params: {
     environmentType: environmentType

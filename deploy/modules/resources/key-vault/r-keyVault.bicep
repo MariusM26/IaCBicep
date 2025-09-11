@@ -6,6 +6,9 @@
 @description('The target deployment environment tag.')
 param environmentType string
 
+@description('The region in which the Key Vault is deployed.')
+param location string = resourceGroup().location
+
 @maxLength(18)
 @description('Short keyword for vault business context used in resource naming.')
 param keyword string
@@ -37,6 +40,12 @@ param bypassTrustedServices bool = true
 @description('Block public traffic.')
 param defaultNetworkAction string = 'Deny'
 
+// Local variables
+var deploymentName = 'kvdpl-${environmentType}-${location}'
+var keyVaultName = 'kv${environmentType}${keyword}'
+var isProduction = environmentType == 'prod'
+
+// Referenced resources
 module diagnosticSettingsCategories '../../common/diagnosticSettingsCategories.bicep' = {
   params: {
     ErrorsEnabled: true
@@ -44,13 +53,11 @@ module diagnosticSettingsCategories '../../common/diagnosticSettingsCategories.b
   }
 }
 
-var isProduction = environmentType == 'prod'
-
 module keyVault 'br/public:avm/res/key-vault/vault:0.13.3' = {
-  name: 'KeyVaultDeployment'
+  name: deploymentName
   params: {
-    name: 'kv${environmentType}${keyword}'
-    location: resourceGroup().location
+    name: keyVaultName
+    location: location
     // Environment-based
     enablePurgeProtection: isProduction ? true : enablePurgeProtection
     enableSoftDelete: isProduction ? true : enableSoftDelete
@@ -79,12 +86,11 @@ module keyVault 'br/public:avm/res/key-vault/vault:0.13.3' = {
     }
     diagnosticSettings: [
       {
-        name: '${logAnalyticsWorkspaceId}-customDiagnosticSettings'
-        workspaceResourceId: logAnalyticsWorkspaceId
         logCategoriesAndGroups: diagnosticSettingsCategories.outputs.logsCategories
         metricCategories: diagnosticSettingsCategories.outputs.metricsCategories
-        // To be configured if logs retention is desired
-        storageAccountResourceId: null
+        name: '${logAnalyticsWorkspaceId}-customDiagnosticSettings'
+        storageAccountResourceId: null // To be configured if extra logs retention is desired
+        workspaceResourceId: logAnalyticsWorkspaceId
       }
     ]
     tags: {
