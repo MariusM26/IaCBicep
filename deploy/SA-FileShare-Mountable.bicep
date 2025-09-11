@@ -44,12 +44,13 @@ resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2025-0
 }
 
 // West Europe Virtual Network
-module vNet './modules/resources/r-vNet.bicep' = {
+module vNet './modules/resources/network/r-vNet.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
     environmentType: 'dev'
-    addressPrefix: '10.0.0.0/16'
+    logAnalyticsWorkspaceId: ''
+    networkSecurityGroupId: ''
   }
 }
 
@@ -57,24 +58,25 @@ resource vnetlocal 'Microsoft.ScVmm/virtualNetworks@2025-03-13' existing = {
   name: 'mml-vnet'
 }
 
-module NSG './modules/resources/r-nsg.bicep' = {
+module NSG './modules/resources/network/r-nsg.bicep' = {
   scope: resourceGroup()
   params: {
     location: location
-    resourceName: 'peNSG'
-    nsgType: 'privateEndpoint'
+    nsgType: 'privateendpoint'
+    environmentType: 'dev'
+    logAnalyticsWorkspaceId: ''
   }
 }
 
 // Private Endpoint Subnet
-module subnet './modules/resources/r-subNet.bicep' = {
+module subnet './modules/resources/network/r-subNet.bicep' = {
   scope: resourceGroup()
   params: {
     resourceName: 'mmlPrivateEndpoint'
     vNetName: vNet.outputs.vNetName
     subNetAddressPrefix: '10.0.1.0/24'
     privateEndpointNetworkPolicies: 'Disabled'
-    networkSecurityGroupId: NSG.outputs.nsgId
+    networkSecurityGroupId: NSG.outputs.resourceId
   }
 }
 

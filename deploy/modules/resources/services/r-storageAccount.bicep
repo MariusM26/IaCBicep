@@ -25,10 +25,10 @@ module t 'br/public:avm/res/storage/storage-account:0.26.2' = {
     privateEndpoints: [
       {
         name: 'sadevmarad-plsc'
-        properties: {
-          privateLinkServiceId: storageAccount.id
-          groupIds: ['blob']
-        }
+        // properties: {
+        //   privateLinkServiceId: storageAccount.id
+        //   groupIds: ['blob']
+        // }
         service: ''
         subnetResourceId: ''
       }

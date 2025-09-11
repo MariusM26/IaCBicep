@@ -51,7 +51,7 @@ module resourceGroupCommon 'modules/resource-groups/rg-common.bicep' = {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Container
 
-module appService './modules/resources/r-appService.bicep' = {
+module appService './modules/resources/services/r-appService.bicep' = {
   scope: resourceGroup('rg-dev-common')
   dependsOn: [
     resourceGroupCommon
@@ -69,7 +69,7 @@ module appService './modules/resources/r-appService.bicep' = {
   }
 }
 
-module acrPullRoleAssignment 'modules/roles/assignments/ra-containerRegistry.bicep' = {
+module acrPullRoleAssignment 'modules/resources/security/role/assignments/ra-containerRegistry.bicep' = {
   scope: resourceGroup('rg-dev-common')
   params: {
     appServicePrincipalId: appService.outputs.appServicePrincipalId
@@ -95,7 +95,7 @@ module appConfig 'br/public:avm/res/web/site/config:0.1.0' = {
   }
 }
 
-module storageAccount './modules/resources/r-storageAccount.bicep' = {
+module storageAccount './modules/resources/services/r-storageAccount.bicep' = {
   scope: resourceGroup('rg-dev-common')
   params: {
     location: location
